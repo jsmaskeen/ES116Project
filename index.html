@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES116 Project</title>
+</head>
+
+<body>
+    <div id="output">
+
+    </div>
+    <script>
+        function fetchData() {
+            fetch('https://es116-jsm.vercel.app/get_data')
+                .then(response => response.json())
+                .then(data => {
+                    data = data.slice(0,10);
+                    const counts = {};
+                    let maxCount = 0;
+                    let mostRepeatedElement;
+
+                    data.forEach(element => {
+                        element = element.reading;
+                        counts[element] = (counts[element] || 0) + 1;
+                        if (counts[element] > maxCount) {
+                            maxCount = counts[element];
+                            mostRepeatedElement = element;
+                        }
+                    });
+                    // console.log(mostRepeatedElement);
+                    document.getElementById('output').innerText = `${mostRepeatedElement.replace("s","#")}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+        setInterval(fetchData, 1000);
+    </script>
+</body>
+
+</html>
